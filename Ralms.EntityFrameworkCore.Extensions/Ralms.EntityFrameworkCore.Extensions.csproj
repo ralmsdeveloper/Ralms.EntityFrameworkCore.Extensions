@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Copyright>Copyright © 2017-2018 Rafael Almeida</Copyright>
+    <PackageTags>Ralms.EntityFrameworkCore; LazyLoad; EntityFrameworkCore; Entity Framework Core;entity-framework-core;EF;Data;O/RM</PackageTags>
+    <Description>Extension LazyLoad for EntityFrameworkCore</Description>
+    <RepositoryType>git</RepositoryType>
+    <Authors>Rafael Almeida</Authors>
+    <Company>Ralms.net - ralms@ralms.net</Company>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Castle.Core" Version="4.3.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Properties\ProxiesStrings.Designer.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ProxiesStrings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\ProxiesStrings.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ProxiesStrings.Designer.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+</Project>
