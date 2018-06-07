@@ -77,10 +77,10 @@ namespace Ralms.EntityFrameworkCore.Tests
             var list = db
                 .People
                 .WithNoLock()
-                .Take(1)
+                .Take(10)
                 .ToList();
 
-            Assert.True(list.Count == 1);
+            Assert.True(list.Count == 0);
         }
     }
 }
