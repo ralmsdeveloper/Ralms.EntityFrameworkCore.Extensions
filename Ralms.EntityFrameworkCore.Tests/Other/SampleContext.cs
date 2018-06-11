@@ -24,9 +24,8 @@ namespace Ralms.EntityFrameworkCore.Tests
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-
             optionsBuilder
-                .UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=TesteExtensao;Integrated Security=True;")
+                .UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=SampleExtension;Integrated Security=True;")
                 .RalmsExtendFunctions();
         }
 

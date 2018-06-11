@@ -16,7 +16,17 @@ DateDiff, LazyLoad (No Virtual) & Hint (With NOLOCK)
 
 ## Example of use WithNoLock
 
+
  ```csharp
+
+ protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+{
+    optionsBuilder
+        .UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=SampleExtension;Integrated Security=True;")
+        .RalmsExtendFunctions(); // Enable Extension
+}
+
+// Sample Use
 var list = db
     .People
     .WithNoLock()
