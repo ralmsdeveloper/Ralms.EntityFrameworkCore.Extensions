@@ -36,7 +36,6 @@ using System.Reflection;
 
 namespace Ralms.EntityFrameworkCore.Extensions.WithNoLock
 {
-    
     public class RalmsEntityQueryableExpressionVisitor : EntityQueryableExpressionVisitor
     {
         private readonly IModel _model;
@@ -45,7 +44,8 @@ namespace Ralms.EntityFrameworkCore.Extensions.WithNoLock
         private readonly IShaperCommandContextFactory _shaperCommandContextFactory;
         private readonly IQuerySource _querySource;
 
-        private new RelationalQueryModelVisitor QueryModelVisitor => (RelationalQueryModelVisitor)base.QueryModelVisitor;
+        private new RelationalQueryModelVisitor QueryModelVisitor 
+            => (RelationalQueryModelVisitor)base.QueryModelVisitor;
 
         public RalmsEntityQueryableExpressionVisitor(
             RelationalEntityQueryableExpressionVisitorDependencies dependencies,
@@ -90,7 +90,7 @@ namespace Ralms.EntityFrameworkCore.Extensions.WithNoLock
                 = relationalQueryCompilationContext
                     .QueryAnnotations
                     .OfType<WithNoLockResultOperator>()
-                    .LastOrDefault(a => a.WithNoLock && a.QuerySource == _querySource);
+                    .LastOrDefault(a => a.WithNoLock);
 
             Func<IQuerySqlGenerator> querySqlGeneratorFunc = selectExpression.CreateDefaultQuerySqlGenerator;
 
@@ -226,22 +226,24 @@ namespace Ralms.EntityFrameworkCore.Extensions.WithNoLock
             where TEntity : class
         {
             return !useQueryBuffer
-                           ? (IShaper<TEntity>)new UnbufferedEntityShaper<TEntity>(
-                               querySource,
-                               trackingQuery,
-                               key,
-                               materializer,
-                               materializerExpression)
-                           : new BufferedEntityShaper<TEntity>(
-                               querySource,
-                               trackingQuery,
-                               key,
-                               materializer,
-                               typeIndexMap);
+                ? (IShaper<TEntity>)new UnbufferedEntityShaper<TEntity>(
+                    querySource,
+                    trackingQuery,
+                    key,
+                    materializer,
+                    materializerExpression)
+                : new BufferedEntityShaper<TEntity>(
+                    querySource,
+                    trackingQuery,
+                    key,
+                    materializer,
+                    typeIndexMap);
         }
 
         private void DiscriminateProjectionQuery(
-         IEntityType entityType, SelectExpression selectExpression, IQuerySource querySource)
+            IEntityType entityType, 
+            SelectExpression selectExpression, 
+            IQuerySource querySource)
         {
             Expression discriminatorPredicate;
 
@@ -256,7 +258,7 @@ namespace Ralms.EntityFrameworkCore.Extensions.WithNoLock
                         .Where(e => !e.IsQueryType)
                         .Where(
                             et => et.Relational().TableName == entityType.Relational().TableName
-                                  && et.Relational().Schema == entityType.Relational().Schema));
+                                 && et.Relational().Schema == entityType.Relational().Schema));
 
                 var currentPath = new Stack<IEntityType>();
                 currentPath.Push(entityType);
@@ -297,8 +299,8 @@ namespace Ralms.EntityFrameworkCore.Extensions.WithNoLock
             var identifyingFks = entityType.FindForeignKeys(entityType.FindPrimaryKey().Properties)
                 .Where(
                     fk => fk.PrincipalKey.IsPrimaryKey()
-                          && fk.PrincipalEntityType != entityType
-                          && sharedTypes.Contains(fk.PrincipalEntityType))
+                        && fk.PrincipalEntityType != entityType
+                        && sharedTypes.Contains(fk.PrincipalEntityType))
                 .ToList();
 
             if (identifyingFks.Count == 0)
@@ -316,7 +318,9 @@ namespace Ralms.EntityFrameworkCore.Extensions.WithNoLock
         }
 
         private static Expression GenerateDiscriminatorExpression(
-            IEntityType entityType, SelectExpression selectExpression, IQuerySource querySource)
+            IEntityType entityType, 
+            SelectExpression selectExpression, 
+            IQuerySource querySource)
         {
             var concreteEntityTypes
                 = entityType.GetConcreteTypesInHierarchy().ToList();

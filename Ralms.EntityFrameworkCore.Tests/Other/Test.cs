@@ -24,33 +24,42 @@ namespace Ralms.EntityFrameworkCore.Tests
 {
     public class Test
     {
-        private SampleContext db;
-        private List<People> peopleList = null;
+        private SampleContext _db;
+        private List<Blog> _blogList;
 
         public Test()
         {
-            db = new SampleContext();
-            peopleList = new List<People>();
+            _db = new SampleContext();
+            _blogList = new List<Blog>();
 
-            db.Database.EnsureDeleted();
-            db.Database.EnsureCreated();
+            _db.Database.EnsureDeleted();
+            _db.Database.EnsureCreated();
 
             for (int i = 0; i < 100; i++)
             {
-                peopleList.Add(new People
+                _blogList.Add(new Blog
                 {
                     Name = $"Teste {i}",
-                    Birthday = DateTime.Now.AddDays(i),
-                    Birthday2 = DateTime.Now.AddDays(i),
-                    Date = DateTimeOffset.Now.AddDays(i)
+                    Date = DateTime.Now,
+                    Posts = new[]
+                    {
+                        new Post
+                        {
+                            Content = $"Test Content {i}",
+                            Title = $"Title Post {i}"
+                        }
+                    }
                 });
             }
+
+            _db.Blogs.AddRange(_blogList);
+            _db.SaveChanges();
         }
 
         [Fact]
         public void ClientEval()
         {
-            var list = peopleList
+            var list = _blogList
                 .Where(p => EFCore.DateDiff(DatePart.day, DateTimeOffset.Now, p.Date) < 50)
                 .ToList();
 
@@ -60,12 +69,9 @@ namespace Ralms.EntityFrameworkCore.Tests
         [Fact]
         public void ServerTranslate()
         {
-            db.People.AddRange(peopleList);
-            db.SaveChanges();
-
-            var list = db
-                .People
-                .Where(p => EFCore.DateDiff(DatePart.day, DateTime.Now, p.Birthday) < 50)
+            var list = _db
+                .Blogs
+                .Where(p => EFCore.DateDiff(DatePart.day, DateTime.Now, p.Date) < 50)
                 .ToList();
 
             Assert.True(list.Count == 50);
@@ -74,18 +80,14 @@ namespace Ralms.EntityFrameworkCore.Tests
         [Fact]
         public void ServerTranslateNoLock()
         {
-            var list = db
-                .People
-                .WithNoLock();
+            var list = _db
+                .Blogs 
+                .Include(p => p.Posts)
+                .Take(10)
+                .WithNoLock()
+                .ToList();
 
-            foreach (var item in list)
-            {
-
-            }
-            //    .Take(10)
-            //    .ToList();
-
-            //Assert.True(list.Count == 0);
+            Assert.True(list.Count == 10);
         }
     }
 }

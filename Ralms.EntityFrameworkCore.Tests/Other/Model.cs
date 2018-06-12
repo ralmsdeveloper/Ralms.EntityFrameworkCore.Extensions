@@ -15,15 +15,24 @@
  */
 
 using System;
+using System.Collections.Generic;
 
 namespace Ralms.EntityFrameworkCore.Tests
 {
-    public class People
+    public class Blog
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public DateTime Birthday { get; set; }
-        public DateTime? Birthday2 { get; set; }
-        public DateTimeOffset Date { get; set; }
+        public DateTime Date { get; set; }
+        public virtual IEnumerable<Post> Posts { get; set; }
+    }
+
+    public class Post
+    {
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public string Content { get; set; }
+
+        public virtual Blog Blog { get; set; }
     }
 }
