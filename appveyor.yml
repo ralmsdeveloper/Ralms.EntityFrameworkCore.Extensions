@@ -1,5 +1,19 @@
 version: 1.0.{build}
 image: Visual Studio 2017 Preview
 services: mssql2017
+init:
+  - git config --global core.autocrlf input
+cache:
+  - '%USERPROFILE%\.nuget\packages -> **\*.csproj'
+shallow_clone: true
+install:
+  - ps: $env:padded_build_number = $env:appveyor_build_number.PadLeft(5, '0')
+  - ps: Invoke-WebRequest -Uri "https://raw.githubusercontent.com/dotnet/cli/master/scripts/obtain/dotnet-install.ps1" -OutFile "install-dotnet.ps1"
+  - ps: .\install-dotnet.ps1 -Version 2.1.300
+test: off
+before_build:
+  - ps: $baseDir = Resolve-Path .
+  - dotnet --info
+  - appveyor-retry dotnet restore -v Minimal
 build:
   verbosity: minimal
