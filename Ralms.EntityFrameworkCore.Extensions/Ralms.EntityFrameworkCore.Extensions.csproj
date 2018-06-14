@@ -9,7 +9,7 @@
     <RepositoryType>git</RepositoryType>
     <Authors>Rafael Almeida</Authors>
     <Company>Ralms.net - ralms@ralms.net</Company>
-    <Version>1.0.2</Version>
+    <Version>1.0.3</Version>
     <RepositoryUrl>https://github.com/ralmsdeveloper/Ralms.EntityFrameworkCore.Extensions</RepositoryUrl>
     <AssemblyVersion>1.0.2.0</AssemblyVersion>
     <PackageProjectUrl>https://github.com/ralmsdeveloper/Ralms.EntityFrameworkCore.Extensions</PackageProjectUrl>

@@ -32,8 +32,8 @@ namespace Ralms.EntityFrameworkCore.Extensions.WithNoLock
         public virtual ExpressionVisitor Create(
             EntityQueryModelVisitor queryModelVisitor, IQuerySource querySource)
             => new RalmsEntityQueryableExpressionVisitor(
-                               Dependencies,
-                               (RelationalQueryModelVisitor)queryModelVisitor,
-                               querySource);
+                Dependencies,
+                (RelationalQueryModelVisitor)queryModelVisitor,
+                querySource);
     }
 }

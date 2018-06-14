@@ -19,7 +19,7 @@ using Ralms.EntityFrameworkCore.Extensions;
 
 namespace Microsoft.EntityFrameworkCore
 {
-    public static class DbContextOptionsBuilderExtensions
+    public static class RalmsDbContextOptionsBuilderExtensions
     {
         public static DbContextOptionsBuilder RalmsExtendFunctions(this DbContextOptionsBuilder optionsBuilder)
         {

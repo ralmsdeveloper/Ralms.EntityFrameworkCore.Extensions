@@ -22,17 +22,15 @@ using Xunit;
 
 namespace Ralms.EntityFrameworkCore.Tests
 {
-    public class Test
+    public class TestWithNoLock
     {
         private SampleContext _db;
         private List<Blog> _blogList;
 
-        public Test()
+        public TestWithNoLock()
         {
             _db = new SampleContext();
             _blogList = new List<Blog>();
-
-            _db.Database.EnsureDeleted();
             _db.Database.EnsureCreated();
 
             for (int i = 0; i < 100; i++)
@@ -56,38 +54,27 @@ namespace Ralms.EntityFrameworkCore.Tests
             _db.SaveChanges();
         }
 
-        [Fact]
-        public void ClientEval()
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void Test_wih_no_lock(bool isNolock)
         {
-            var list = _blogList
-                .Where(p => EFCore.DateDiff(DatePart.day, DateTimeOffset.Now, p.Date) < 50)
-                .ToList();
-
-            Assert.True(list.Count == 50);
-        }
-
-        [Fact]
-        public void ServerTranslate()
-        {
-            var list = _db
-                .Blogs
-                .Where(p => EFCore.DateDiff(DatePart.day, DateTime.Now, p.Date) < 50)
-                .ToList();
-
-            Assert.True(list.Count == 50);
-        }
-
-        [Fact]
-        public void ServerTranslateNoLock()
-        {
-            var list = _db
+            var query = _db
                 .Blogs 
                 .Include(p => p.Posts)
                 .Take(10)
-                .WithNoLock()
-                .ToList();
+                .WithNoLock(isNolock)
+                .ToSql();
 
-            Assert.True(list.Count == 10);
+            if (isNolock)
+            {
+                Assert.Contains("WITH (NOLOCK)", query);
+            }
+            else
+            {
+                Assert.DoesNotContain("WITH (NOLOCK)", query);
+            }
+            
         }
     }
 }

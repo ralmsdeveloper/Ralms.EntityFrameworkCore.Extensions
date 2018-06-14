@@ -32,5 +32,38 @@ namespace Ralms.EntityFrameworkCore.Extensions.WithNoLock.Query
         {
             WithNoLock = withNoLock;
         }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return GetType().GetHashCode() ^ (base.GetHashCode() * 397);
+            }
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is null)
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            return obj.GetType() == GetType() 
+                && Equals((TableExpressionExtension)obj);
+        }
+
+        private bool Equals(TableExpressionExtension table)
+            => string.Equals(Table, table.Table)
+               && string.Equals(Schema, table.Schema)
+               && string.Equals(Alias, table.Alias)
+               && Equals(QuerySource, table.QuerySource);
+
+        public override string ToString() 
+            => Table + " " + Alias + (WithNoLock ? " WITH (NOLOCK)" : "");
     }
 }

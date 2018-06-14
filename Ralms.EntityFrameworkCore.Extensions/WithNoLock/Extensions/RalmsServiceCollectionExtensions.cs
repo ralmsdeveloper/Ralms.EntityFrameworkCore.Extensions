@@ -22,7 +22,7 @@ using Ralms.EntityFrameworkCore.Extensions.WithNoLock;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
-    public static class ServiceCollectionExtensions
+    public static class RalmsServiceCollectionExtensions
     {
         public static IServiceCollection AddRalmsExtensions(this IServiceCollection services)
         {

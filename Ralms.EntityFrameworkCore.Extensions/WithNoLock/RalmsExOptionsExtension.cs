@@ -24,7 +24,7 @@ namespace Ralms.EntityFrameworkCore.Extensions
         public string LogFragment => string.Empty;
 
         public long GetServiceProviderHashCode()
-            => base.GetHashCode()  * 3;
+            => base.GetHashCode()  * 397;
 
         public void Validate(IDbContextOptions options)
         {

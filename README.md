@@ -19,17 +19,30 @@ DateDiff, LazyLoad (No Virtual) & Hint (With NOLOCK)
 
  ```csharp
 
+ // Enable Extension
  protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 {
     optionsBuilder
         .UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=SampleExtension;Integrated Security=True;")
-        .RalmsExtendFunctions(); // Enable Extension
+        .RalmsExtendFunctions();
 }
 
 // Sample Use
 var list = db
     .People
     .WithNoLock()
+    .Take(1)
+    .ToList(); 
+
+var list = db
+    .People
+    .WithNoLock(true)
+    .Take(1)
+    .ToList(); 
+
+var list = db
+    .People
+    .WithNoLock(false)
     .Take(1)
     .ToList(); 
 ```
