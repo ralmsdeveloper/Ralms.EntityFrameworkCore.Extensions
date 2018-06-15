@@ -25,9 +25,15 @@ namespace Microsoft.EntityFrameworkCore.Query
             QueryCompilationContextDependencies dependencies,
             RelationalQueryCompilationContextDependencies relationalDependencies)
             : base(dependencies)
-            => relationalDependencies
+        {
+            relationalDependencies
                 .NodeTypeProviderFactory
                 .RegisterMethods(WithNoLockExpressionNode.SupportedMethods, typeof(WithNoLockExpressionNode));
+
+            relationalDependencies
+                .NodeTypeProviderFactory
+                .RegisterMethods(HintExpressionNode.SupportedMethods, typeof(HintExpressionNode));
+        }
 
         public override QueryCompilationContext Create(bool async)
             => async

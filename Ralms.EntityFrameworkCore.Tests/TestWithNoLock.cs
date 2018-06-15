@@ -74,7 +74,20 @@ namespace Ralms.EntityFrameworkCore.Tests
             {
                 Assert.DoesNotContain("WITH (NOLOCK)", query);
             }
-            
+        }
+
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void Test_hints(bool repeatForInclude)
+        {
+            var hints = _db
+                .Blogs
+                .Include(p => p.Posts)
+                .Hint("WITH (NOLOCK)", repeatForInclude)
+                .ToSql(); 
+
+             Assert.Contains("WITH (NOLOCK)", hints);
         }
     }
 }

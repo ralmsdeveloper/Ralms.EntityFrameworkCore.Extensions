@@ -26,7 +26,8 @@ namespace Microsoft.EntityFrameworkCore
         #region WithNoLock
         internal static readonly MethodInfo WithNoLockMethodInfo
             = typeof(RalmsQueryableExtensions)
-                .GetTypeInfo().GetDeclaredMethod(nameof(WithNoLock)); 
+                .GetTypeInfo().GetDeclaredMethods(nameof(WithNoLock))
+                .Single();
 
         public static IQueryable<TEntity> WithNoLock<TEntity>(
             this IQueryable<TEntity> source,
@@ -39,6 +40,28 @@ namespace Microsoft.EntityFrameworkCore
                     WithNoLockMethodInfo.MakeGenericMethod(typeof(TEntity)),
                     source.Expression,
                     Expression.Constant(withNoLock, typeof(bool))));
+        }
+        #endregion
+
+        #region Hint
+        internal static readonly MethodInfo HintMethodInfo
+            = typeof(RalmsQueryableExtensions)
+                .GetTypeInfo().GetDeclaredMethods(nameof(Hint))
+                .Single();
+
+        public static IQueryable<TEntity> Hint<TEntity>(
+            this IQueryable<TEntity> source,
+            string hint,
+            [NotParameterized] bool repeatForInclude = true)
+            where TEntity : class
+        {
+            return source.Provider.CreateQuery<TEntity>(
+                Expression.Call(
+                    null,
+                    HintMethodInfo.MakeGenericMethod(typeof(TEntity)),
+                    source.Expression,
+                    Expression.Constant(hint, typeof(string)),
+                    Expression.Constant(repeatForInclude, typeof(bool))));
         }
         #endregion
     }

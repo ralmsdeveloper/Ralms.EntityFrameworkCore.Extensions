@@ -19,26 +19,26 @@ using Microsoft.Extensions.Logging;
 
 namespace Ralms.EntityFrameworkCore.Tests
 {
-    public class SampleContext : DbContext
+public class SampleContext : DbContext
+{
+    public DbSet<Blog> Blogs { get; set; }
+    public DbSet<Post> Posts { get; set; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        public DbSet<Blog> Blogs { get; set; }
-        public DbSet<Post> Posts { get; set; }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder
-                .UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=SampleExtension;Integrated Security=True;")
-                .RalmsExtendFunctions()
-                .UseLoggerFactory(_loggerFactory)
-                .EnableSensitiveDataLogging();
-        }
-
-        protected override void OnModelCreating(ModelBuilder modelo)
-        {
-            modelo.EnableSqlServerDateDIFF();
-        }
-
-        private static readonly ILoggerFactory _loggerFactory
-          = new LoggerFactory().AddConsole((s, l) => l == LogLevel.Information && !s.EndsWith("Connection"));
+        optionsBuilder
+            .UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=SampleExtension;Integrated Security=True;")
+            .RalmsExtendFunctions()
+            .UseLoggerFactory(_loggerFactory)
+            .EnableSensitiveDataLogging();
     }
+
+    protected override void OnModelCreating(ModelBuilder modelo)
+    {
+        modelo.EnableSqlServerDateDIFF();
+    }
+
+    private static readonly ILoggerFactory _loggerFactory
+        = new LoggerFactory().AddConsole((s, l) => l == LogLevel.Information && !s.EndsWith("Connection"));
+}
 }

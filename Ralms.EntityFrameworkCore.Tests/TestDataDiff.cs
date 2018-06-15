@@ -57,10 +57,10 @@ namespace Ralms.EntityFrameworkCore.Tests
         [Fact]
         public void ClientEval()
         {
-            var list = _blogList
-                .Where(p => EFCore.DateDiff(DatePart.day, DateTimeOffset.Now, p.Date) < 50)
-                .Take(50)
-                .ToList();
+        var list = _blogList
+            .Where(p => EFCore.DateDiff(DatePart.day, DateTimeOffset.Now, p.Date) < 50)
+            .Take(50)
+            .ToList();
 
             Assert.True(list.Count == 50);
         }

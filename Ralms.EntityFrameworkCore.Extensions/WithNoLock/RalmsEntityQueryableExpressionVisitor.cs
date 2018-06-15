@@ -92,6 +92,27 @@ namespace Ralms.EntityFrameworkCore.Extensions.WithNoLock
                     .OfType<WithNoLockResultOperator>()
                     .LastOrDefault(a => a.WithNoLock);
 
+            var hintAnnotation
+                = relationalQueryCompilationContext
+                    .QueryAnnotations
+                    .OfType<HintResultOperator>()
+                    .LastOrDefault(a => !string.IsNullOrWhiteSpace(a.Hint));
+
+            var includes
+                = relationalQueryCompilationContext
+                    .QueryAnnotations
+                    .OfType<IncludeResultOperator>()
+                    .LastOrDefault(a => a.QuerySource == _querySource);
+
+            var hint = hintAnnotation?.Hint;
+            if(hintAnnotation != null
+                && relationalQueryCompilationContext.IsIncludeQuery
+                    && !hintAnnotation.RepeatForInclude
+                    && includes == null)
+            {
+                hint = "";
+            }
+
             Func<IQuerySqlGenerator> querySqlGeneratorFunc = selectExpression.CreateDefaultQuerySqlGenerator;
 
             if (fromSqlAnnotation == null)
@@ -102,6 +123,7 @@ namespace Ralms.EntityFrameworkCore.Extensions.WithNoLock
                         entityType.Relational().Schema,
                         tableAlias,
                         withNoLockAnnotation != null,
+                        hint,
                         _querySource));
             }
             else
