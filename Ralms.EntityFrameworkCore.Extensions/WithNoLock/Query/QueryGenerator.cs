@@ -41,13 +41,6 @@ namespace Ralms.EntityFrameworkCore.Extensions
             {
                 Sql.Append(" WITH (NOLOCK) ");
             }
-            else
-            {
-                if (!string.IsNullOrWhiteSpace(table.Hint))
-                {
-                    Sql.Append($" {table.Hint} ");
-                }
-            }
             
             return visitTable;
         }

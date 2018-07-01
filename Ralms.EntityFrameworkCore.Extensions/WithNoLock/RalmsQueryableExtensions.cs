@@ -41,28 +41,6 @@ namespace Microsoft.EntityFrameworkCore
                     source.Expression,
                     Expression.Constant(withNoLock, typeof(bool))));
         }
-        #endregion
-
-        #region Hint
-        internal static readonly MethodInfo HintMethodInfo
-            = typeof(RalmsQueryableExtensions)
-                .GetTypeInfo().GetDeclaredMethods(nameof(Hint))
-                .Single();
-
-        public static IQueryable<TEntity> Hint<TEntity>(
-            this IQueryable<TEntity> source,
-            string hint,
-            [NotParameterized] bool repeatForInclude = true)
-            where TEntity : class
-        {
-            return source.Provider.CreateQuery<TEntity>(
-                Expression.Call(
-                    null,
-                    HintMethodInfo.MakeGenericMethod(typeof(TEntity)),
-                    source.Expression,
-                    Expression.Constant(hint, typeof(string)),
-                    Expression.Constant(repeatForInclude, typeof(bool))));
-        }
-        #endregion
+        #endregion 
     }
 }

@@ -29,8 +29,8 @@ namespace Ralms.EntityFrameworkCore.Tests
 
         public TestDataDiff()
         {
-            _db = new SampleContext();
-            _blogList = new List<Blog>();
+            _db = new SampleContext("DateDiff");
+            _blogList = new List<Blog>(); 
             _db.Database.EnsureCreated();
 
             for (int i = 0; i < 100; i++)

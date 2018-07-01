@@ -21,19 +21,16 @@ namespace Ralms.EntityFrameworkCore.Extensions.WithNoLock.Query
 {
     public class TableExpressionExtension : TableExpression
     {
-        public virtual string Hint { get; }
         public virtual bool WithNoLock { get; }
         public TableExpressionExtension(
             string table, 
             string schema, 
             string alias, 
             bool withNoLock,
-            string hint,
             IQuerySource querySource) 
             :base(table,schema,alias,querySource)
         {
             WithNoLock = withNoLock;
-            Hint = hint;
         }
 
         public override int GetHashCode()
@@ -64,10 +61,9 @@ namespace Ralms.EntityFrameworkCore.Extensions.WithNoLock.Query
             => string.Equals(Table, oldExpression.Table)
                && string.Equals(Schema, oldExpression.Schema)
                && string.Equals(Alias, oldExpression.Alias)
-               && string.Equals(Hint, oldExpression.Hint)
                && Equals(QuerySource, oldExpression.QuerySource);
 
-        public override string ToString() 
-            => Table + " " + Alias + (WithNoLock ? " WITH (NOLOCK)" : "") + (!WithNoLock ? Hint : "");
+        public override string ToString()
+            => Table + " " + Alias + (WithNoLock ? " WITH (NOLOCK)" : "");
     }
 }
