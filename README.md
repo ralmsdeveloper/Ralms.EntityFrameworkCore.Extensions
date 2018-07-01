@@ -46,4 +46,22 @@ var list = db
     .Take(1)
     .ToList(); 
 ```
- 
+
+## Example of use ToSql
+ * New extension to design the SQL output
+
+
+ ```csharp
+ var sql = _db
+    .Blogs
+    .Where(p => EFCore.DateDiff(DatePart.day, DateTime.Now, p.Date) < 50)
+    .ToSql();
+```
+
+**Output SQL**
+
+```SQL
+SELECT [p].[Id], [p].[Date], [p].[Name]
+FROM [Blogs] AS [p]
+WHERE DATEDIFF(day, GETDATE(), [p].[Date]) < 50
+```
