@@ -22,49 +22,49 @@ using System.Reflection;
 
 namespace Microsoft.EntityFrameworkCore
 {
-    public static class RalmsExtensionSql
-    {
-        private static readonly TypeInfo _queryCompilerTypeInfo = typeof(QueryCompiler).GetTypeInfo();
+public static class RalmsExtensionSql
+{
+    private static readonly TypeInfo _queryCompilerTypeInfo = typeof(QueryCompiler).GetTypeInfo();
 
-        private static readonly FieldInfo _queryCompiler
-            = typeof(EntityQueryProvider)
-                .GetTypeInfo()
-                .DeclaredFields
-                .Single(x => x.Name == "_queryCompiler"); 
-
-        private static readonly FieldInfo _queryModelGenerator
-            = _queryCompilerTypeInfo
-                .DeclaredFields
-                .Single(x => x.Name == "_queryModelGenerator");
-
-        private static readonly FieldInfo _database = _queryCompilerTypeInfo
+    private static readonly FieldInfo _queryCompiler
+        = typeof(EntityQueryProvider)
+            .GetTypeInfo()
             .DeclaredFields
-            .Single(x => x.Name == "_database");
+            .Single(x => x.Name == "_queryCompiler"); 
 
-        private static readonly PropertyInfo _dependencies
-            = typeof(Database)
-                .GetTypeInfo()
-                .DeclaredProperties
-                .Single(x => x.Name == "Dependencies");
+    private static readonly FieldInfo _queryModelGenerator
+        = _queryCompilerTypeInfo
+            .DeclaredFields
+            .Single(x => x.Name == "_queryModelGenerator");
 
-        public static string ToSql<T>(this IQueryable<T> queryable)
-            where T : class
-        {
-            var queryCompiler = _queryCompiler.GetValue(queryable.Provider) as IQueryCompiler;
-            var queryModel = (_queryModelGenerator.GetValue(queryCompiler) as IQueryModelGenerator).ParseQuery(queryable.Expression);
-            var queryCompilationContextFactory 
-                = ((DatabaseDependencies)_dependencies.GetValue(_database.GetValue(queryCompiler)))
-                    .QueryCompilationContextFactory;
+    private static readonly FieldInfo _database = _queryCompilerTypeInfo
+        .DeclaredFields
+        .Single(x => x.Name == "_database");
 
-            var queryCompilationContext = queryCompilationContextFactory.Create(false);
-            var modelVisitor = (RelationalQueryModelVisitor)queryCompilationContext.CreateQueryModelVisitor();
+    private static readonly PropertyInfo _dependencies
+        = typeof(Database)
+            .GetTypeInfo()
+            .DeclaredProperties
+            .Single(x => x.Name == "Dependencies");
 
-            modelVisitor.CreateQueryExecutor<T>(queryModel);
+    public static string ToSql<T>(this IQueryable<T> queryable)
+        where T : class
+    {
+        var queryCompiler = _queryCompiler.GetValue(queryable.Provider) as IQueryCompiler;
+        var queryModel = (_queryModelGenerator.GetValue(queryCompiler) as IQueryModelGenerator).ParseQuery(queryable.Expression);
+        var queryCompilationContextFactory 
+            = ((DatabaseDependencies)_dependencies.GetValue(_database.GetValue(queryCompiler)))
+                .QueryCompilationContextFactory;
 
-            return modelVisitor
-                .Queries
-                .FirstOrDefault()
-                .ToString();
-        }
+        var queryCompilationContext = queryCompilationContextFactory.Create(false);
+        var modelVisitor = (RelationalQueryModelVisitor)queryCompilationContext.CreateQueryModelVisitor();
+
+        modelVisitor.CreateQueryExecutor<T>(queryModel);
+
+        return modelVisitor
+            .Queries
+            .FirstOrDefault()
+            .ToString();
     }
+}
 }

@@ -61,10 +61,11 @@ namespace Ralms.EntityFrameworkCore.Tests
         public void Test_wih_no_lock(bool isNolock)
         {
             var query = _db
-                .Blogs 
+                .Blogs
                 .Include(p => p.Posts)
-                .Take(10)
                 .WithNoLock(isNolock)
+                .Skip(5)
+                .Take(10)
                 .ToSql();
 
             if (isNolock)

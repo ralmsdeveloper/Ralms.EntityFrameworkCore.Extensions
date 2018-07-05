@@ -31,9 +31,30 @@ namespace Microsoft.EntityFrameworkCore
             return optionsBuilder;
         }
 
-        public static DbContextOptionsBuilder<TContext> ExtendSqlite<TContext>(
+        public static DbContextOptionsBuilder<TContext> RalmsExtendFunctions<TContext>(
             this DbContextOptionsBuilder<TContext> optionsBuilder)
             where TContext : DbContext
             => (DbContextOptionsBuilder<TContext>)RalmsExtendFunctions((DbContextOptionsBuilder)optionsBuilder);
+
+#warning Use in the future!
+        public static DbContextOptionsBuilder<TContext> RalmsExtendSqlServer<TContext>(
+            this DbContextOptionsBuilder<TContext> optionsBuilder)
+            where TContext : DbContext
+            => (DbContextOptionsBuilder<TContext>)RalmsExtendFunctions((DbContextOptionsBuilder)optionsBuilder);
+
+        public static DbContextOptionsBuilder<TContext> RalmsExtendSqlite<TContext>(
+           this DbContextOptionsBuilder<TContext> optionsBuilder)
+           where TContext : DbContext
+           => (DbContextOptionsBuilder<TContext>)RalmsExtendFunctions((DbContextOptionsBuilder)optionsBuilder);
+
+        public static DbContextOptionsBuilder<TContext> RalmsExtendFirebird<TContext>(
+           this DbContextOptionsBuilder<TContext> optionsBuilder)
+           where TContext : DbContext
+           => (DbContextOptionsBuilder<TContext>)RalmsExtendFunctions((DbContextOptionsBuilder)optionsBuilder);
+
+        public static DbContextOptionsBuilder<TContext> RalmsExtendPostgres<TContext>(
+           this DbContextOptionsBuilder<TContext> optionsBuilder)
+           where TContext : DbContext
+           => (DbContextOptionsBuilder<TContext>)RalmsExtendFunctions((DbContextOptionsBuilder)optionsBuilder);
     }
 }
