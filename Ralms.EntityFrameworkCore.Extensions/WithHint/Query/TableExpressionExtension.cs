@@ -17,20 +17,20 @@
 using Microsoft.EntityFrameworkCore.Query.Expressions;
 using Remotion.Linq.Clauses;
 
-namespace Ralms.EntityFrameworkCore.Extensions.WithNoLock.Query
+namespace Ralms.EntityFrameworkCore.Extensions.With.Query
 {
     public class TableExpressionExtension : TableExpression
     {
-        public virtual bool WithNoLock { get; }
+        public virtual string Hint { get; }
         public TableExpressionExtension(
             string table, 
             string schema, 
             string alias, 
-            bool withNoLock,
+            string withHint,
             IQuerySource querySource) 
             :base(table,schema,alias,querySource)
         {
-            WithNoLock = withNoLock;
+            Hint = withHint;
         }
 
         public override int GetHashCode()
@@ -64,6 +64,6 @@ namespace Ralms.EntityFrameworkCore.Extensions.WithNoLock.Query
                && Equals(QuerySource, oldExpression.QuerySource);
 
         public override string ToString()
-            => Table + " " + Alias + (WithNoLock ? " WITH (NOLOCK)" : "");
+            => Table + " " + Alias + (!string.IsNullOrWhiteSpace(Hint) ? $" WITH ({Hint})" : "");
     }
 }

@@ -18,7 +18,7 @@ using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.EntityFrameworkCore.Query.ExpressionVisitors;
 using Microsoft.EntityFrameworkCore.Query.Sql;
 using Ralms.EntityFrameworkCore.Extensions;
-using Ralms.EntityFrameworkCore.Extensions.WithNoLock;
+using Ralms.EntityFrameworkCore.Extensions.With;
 
 namespace Microsoft.Extensions.DependencyInjection
 {

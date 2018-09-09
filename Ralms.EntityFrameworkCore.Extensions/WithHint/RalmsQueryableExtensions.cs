@@ -23,23 +23,23 @@ namespace Microsoft.EntityFrameworkCore
 {
     public static class RalmsQueryableExtensions
     {
-        #region WithNoLock
-        internal static readonly MethodInfo WithNoLockMethodInfo
+        #region WithHint
+        internal static readonly MethodInfo WithHintMethodInfo
             = typeof(RalmsQueryableExtensions)
-                .GetTypeInfo().GetDeclaredMethods(nameof(WithNoLock))
+                .GetTypeInfo().GetDeclaredMethods(nameof(WithHint))
                 .Single();
 
-        public static IQueryable<TEntity> WithNoLock<TEntity>(
+        public static IQueryable<TEntity> WithHint<TEntity>(
             this IQueryable<TEntity> source,
-            [NotParameterized] bool withNoLock = true)
+            [NotParameterized] string hint)
             where TEntity : class
         {
             return source.Provider.CreateQuery<TEntity>(
                 Expression.Call(
                     null,
-                    WithNoLockMethodInfo.MakeGenericMethod(typeof(TEntity)),
+                    WithHintMethodInfo.MakeGenericMethod(typeof(TEntity)),
                     source.Expression,
-                    Expression.Constant(withNoLock, typeof(bool))));
+                    Expression.Constant(hint, typeof(string))));
         }
         #endregion 
     }

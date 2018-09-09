@@ -23,19 +23,19 @@ using Remotion.Linq.Clauses.StreamedData;
 
 namespace Microsoft.EntityFrameworkCore.Query.ResultOperators.Internal
 {
-    public class WithNoLockResultOperator : SequenceTypePreservingResultOperatorBase, IQueryAnnotation
+    public class WithHintResultOperator : SequenceTypePreservingResultOperatorBase, IQueryAnnotation
     {
-        public WithNoLockResultOperator(bool withNoLock)
+        public WithHintResultOperator(string hint)
         {
-            WithNoLock = withNoLock;
+            Hint = hint;
         }
         
-        public virtual bool WithNoLock { get; }
+        public virtual string Hint { get; }
         public virtual IQuerySource QuerySource { get; set; }
         public virtual QueryModel QueryModel { get; set; }
-        public override string ToString() => WithNoLock ? $"WITH (NOLOCK)" : "";
+        public override string ToString() => !string.IsNullOrWhiteSpace(Hint) ? $"WITH ({Hint})" : "";
         public override ResultOperatorBase Clone(CloneContext cloneContext)
-            => new WithNoLockResultOperator(WithNoLock);
+            => new WithHintResultOperator(Hint);
 
         public override void TransformExpressions(Func<Expression, Expression> transformation)
         {

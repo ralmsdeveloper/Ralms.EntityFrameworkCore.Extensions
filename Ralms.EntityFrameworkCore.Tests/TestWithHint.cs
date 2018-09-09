@@ -22,12 +22,12 @@ using Xunit;
 
 namespace Ralms.EntityFrameworkCore.Tests
 {
-    public class TestWithNoLock
+    public class TestWithHint
     {
-        private SampleContext _db;
-        private List<Blog> _blogList;
+        private readonly SampleContext _db;
+        private readonly List<Blog> _blogList;
 
-        public TestWithNoLock()
+        public TestWithHint()
         {
             _db = new SampleContext("WithLock");
             _blogList = new List<Blog>();
@@ -56,25 +56,30 @@ namespace Ralms.EntityFrameworkCore.Tests
         }
 
         [Theory]
-        [InlineData(true)]
-        [InlineData(false)]
-        public void Test_wih_no_lock(bool isNolock)
+        [InlineData(nameof(SqlServerHints.PAGLOCK))]
+        [InlineData(nameof(SqlServerHints.NOLOCK))]
+        [InlineData(nameof(SqlServerHints.HOLDLOCK))]
+        [InlineData(nameof(SqlServerHints.NOWAIT))]
+        [InlineData(nameof(SqlServerHints.ROWLOCK))]
+        [InlineData(nameof(SqlServerHints.XLOCK))]
+        [InlineData("")]
+        public void Test_wih_no_lock(string hint)
         {
             var query = _db
                 .Blogs
                 .Include(p => p.Posts)
-                .WithNoLock(isNolock)
+                .WithHint(hint)
                 .Skip(5)
                 .Take(10)
                 .ToSql();
 
-            if (isNolock)
+            if (!string.IsNullOrWhiteSpace(hint))
             {
-                Assert.Contains("WITH (NOLOCK)", query);
+                Assert.Contains($"WITH ({hint})", query);
             }
             else
             {
-                Assert.DoesNotContain("WITH (NOLOCK)", query);
+                Assert.DoesNotContain($"WITH ({hint})", query);
             }
         }
     }

@@ -28,7 +28,7 @@ namespace Microsoft.EntityFrameworkCore.Query
         {
             relationalDependencies
                 .NodeTypeProviderFactory
-                .RegisterMethods(WithNoLockExpressionNode.SupportedMethods, typeof(WithNoLockExpressionNode)); 
+                .RegisterMethods(WithHintExpressionNode.SupportedMethods, typeof(WithHintExpressionNode)); 
         }
 
         public override QueryCompilationContext Create(bool async)

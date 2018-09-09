@@ -21,7 +21,7 @@ using Microsoft.EntityFrameworkCore.Query.ExpressionVisitors;
 using Microsoft.EntityFrameworkCore.Query.Sql;
 using Microsoft.EntityFrameworkCore.SqlServer.Query.Sql.Internal;
 using Microsoft.EntityFrameworkCore.Storage;
-using Ralms.EntityFrameworkCore.Extensions.WithNoLock.Query;
+using Ralms.EntityFrameworkCore.Extensions.With.Query;
 
 namespace Ralms.EntityFrameworkCore.Extensions
 {
@@ -41,9 +41,9 @@ namespace Ralms.EntityFrameworkCore.Extensions
 
             var visitTable = base.VisitTable(table);
 
-            if (table.WithNoLock)
+            if (!string.IsNullOrWhiteSpace(table.Hint))
             {
-                Sql.Append(" WITH (NOLOCK) ");
+                Sql.Append($" WITH ({table.Hint}) ");
             }
             
             return visitTable;

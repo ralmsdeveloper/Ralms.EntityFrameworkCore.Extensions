@@ -22,21 +22,21 @@ using Remotion.Linq.Parsing.Structure.IntermediateModel;
 
 namespace Microsoft.EntityFrameworkCore.Query.ResultOperators.Internal
 {
-    public class WithNoLockExpressionNode : ResultOperatorExpressionNodeBase
+    public class WithHintExpressionNode : ResultOperatorExpressionNodeBase
     {
         public static readonly IReadOnlyCollection<MethodInfo> SupportedMethods = new[]
-            { RalmsQueryableExtensions.WithNoLockMethodInfo };
+            { RalmsQueryableExtensions.WithHintMethodInfo };
 
-        private readonly ConstantExpression _withNoLockExpression;
+        private readonly ConstantExpression _withHintExpression;
 
-        public WithNoLockExpressionNode(
+        public WithHintExpressionNode(
             MethodCallExpressionParseInfo parseInfo,
             ConstantExpression withNoLockExpressionExpression)
             : base(parseInfo, null, null)
-            => _withNoLockExpression = withNoLockExpressionExpression;
+            => _withHintExpression = withNoLockExpressionExpression;
 
         protected override ResultOperatorBase CreateResultOperator(ClauseGenerationContext clauseGenerationContext)
-            => new WithNoLockResultOperator((bool)_withNoLockExpression.Value);
+            => new WithHintResultOperator((string)_withHintExpression.Value);
 
         public override Expression Resolve(
             ParameterExpression inputParameter,

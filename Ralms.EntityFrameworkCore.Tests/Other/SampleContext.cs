@@ -33,7 +33,7 @@ namespace Ralms.EntityFrameworkCore.Tests
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder
-                .UseSqlServer($"Server=(localdb)\\mssqllocaldb;Database={NameDatabase};Integrated Security=True;")
+                .UseSqlServer($"Server=.\\SQL2017;Database={NameDatabase};Integrated Security=True;")
                 .RalmsExtendFunctions()
                 .UseLoggerFactory(_loggerFactory)
                 .EnableSensitiveDataLogging();
@@ -44,7 +44,8 @@ namespace Ralms.EntityFrameworkCore.Tests
             modelo.EnableSqlServerDateDIFF();
         }
 
-        private static readonly ILoggerFactory _loggerFactory
-            = new LoggerFactory().AddConsole((s, l) => l == LogLevel.Information && !s.EndsWith("Connection"));
+        private static readonly ILoggerFactory _loggerFactory = new LoggerFactory()
+            .AddDebug()
+            .AddConsole((s, l) => l == LogLevel.Information && !s.EndsWith("Connection"));
     }
 }

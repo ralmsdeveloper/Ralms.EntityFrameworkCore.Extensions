@@ -4,23 +4,22 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Copyright>Copyright © 2018 Rafael Almeida</Copyright>
-    <PackageTags>Ralms.EntityFrameworkCore; LazyLoad; WithNoLock; EntityFrameworkCore; Entity Framework Core;entity-framework-core;EF;Data;O/RM</PackageTags>
-    <Description>Extension LazyLoad for EntityFrameworkCore</Description>
+    <PackageTags>Ralms.EntityFrameworkCore;  SQL Server Query Hints; Hints; EntityFrameworkCore; Entity Framework Core;entity-framework-core;EF;Data;O/RM</PackageTags>
+    <Description>Extension for EntityFrameworkCore</Description>
     <RepositoryType>git</RepositoryType>
     <Authors>Rafael Almeida</Authors>
     <Company>Ralms.net - ralms@ralms.net</Company>
-    <Version>1.0.4</Version>
+    <Version>1.0.5</Version>
     <RepositoryUrl>https://github.com/ralmsdeveloper/Ralms.EntityFrameworkCore.Extensions</RepositoryUrl>
-    <AssemblyVersion>1.0.4.0</AssemblyVersion>
+    <AssemblyVersion>1.0.5.0</AssemblyVersion>
     <PackageProjectUrl>https://github.com/ralmsdeveloper/Ralms.EntityFrameworkCore.Extensions</PackageProjectUrl>
-    <FileVersion>1.0.4.0</FileVersion>
+    <FileVersion>1.0.5.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Castle.Core" Version="4.3.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.1.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.1.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.2" />
   </ItemGroup>
 
   <ItemGroup>

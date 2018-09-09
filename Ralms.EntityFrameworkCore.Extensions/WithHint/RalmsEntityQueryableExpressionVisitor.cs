@@ -26,7 +26,7 @@ using Microsoft.EntityFrameworkCore.Query.Internal;
 using Microsoft.EntityFrameworkCore.Query.ResultOperators.Internal;
 using Microsoft.EntityFrameworkCore.Query.Sql;
 using Microsoft.EntityFrameworkCore.Storage;
-using Ralms.EntityFrameworkCore.Extensions.WithNoLock.Query;
+using Ralms.EntityFrameworkCore.Extensions.With.Query;
 using Remotion.Linq.Clauses;
 using System;
 using System.Collections.Generic;
@@ -34,7 +34,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace Ralms.EntityFrameworkCore.Extensions.WithNoLock
+namespace Ralms.EntityFrameworkCore.Extensions.With
 {
     public class RalmsEntityQueryableExpressionVisitor : EntityQueryableExpressionVisitor
     {
@@ -86,11 +86,11 @@ namespace Ralms.EntityFrameworkCore.Extensions.WithNoLock
                     .OfType<FromSqlResultOperator>()
                     .LastOrDefault(a => a.QuerySource == _querySource);
 
-            var withNoLockAnnotation
+            var withHintAnnotation
                 = relationalQueryCompilationContext
                     .QueryAnnotations
-                    .OfType<WithNoLockResultOperator>()
-                    .LastOrDefault(a => a.WithNoLock); 
+                    .OfType<WithHintResultOperator>()
+                    .LastOrDefault(a => !string.IsNullOrWhiteSpace(a.Hint)); 
 
             var includes
                 = relationalQueryCompilationContext
@@ -107,7 +107,7 @@ namespace Ralms.EntityFrameworkCore.Extensions.WithNoLock
                         tableName,
                         entityType.Relational().Schema,
                         tableAlias,
-                        withNoLockAnnotation != null,
+                        withHintAnnotation?.Hint,
                         _querySource));
             }
             else
