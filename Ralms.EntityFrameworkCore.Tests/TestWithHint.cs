@@ -62,6 +62,7 @@ namespace Ralms.EntityFrameworkCore.Tests
         [InlineData(nameof(SqlServerHints.NOWAIT))]
         [InlineData(nameof(SqlServerHints.ROWLOCK))]
         [InlineData(nameof(SqlServerHints.XLOCK))]
+        [InlineData(nameof(SqlServerHints.UPDLOCK))]
         [InlineData("")]
         public void Test_wih_no_lock(string hint)
         {

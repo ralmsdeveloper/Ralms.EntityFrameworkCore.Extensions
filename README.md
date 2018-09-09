@@ -2,7 +2,7 @@
 Ralms.EntityFrameworkCore.Extensions for EntityFramework Core
  
 ##  Supports: 
-DateDiff, LazyLoad (No Virtual) & Hint (With NOLOCK) 
+DateDiff & Query Hints (Only SQL Server)
 
 
 ## Example of use DateDiff
@@ -14,7 +14,7 @@ DateDiff, LazyLoad (No Virtual) & Hint (With NOLOCK)
     .ToList();  
 ```
 
-## Example of use WithNoLock
+## Example of use Ralms.EntityFrameworkCore.Extensions
 
 
  ```csharp
@@ -30,22 +30,21 @@ DateDiff, LazyLoad (No Virtual) & Hint (With NOLOCK)
 // Sample Use
 var list = db
     .People
-    .WithNoLock()
+    .WithHint(SqlServerHints.NOLOCK)
     .Take(1)
     .ToList(); 
 
 var list = db
     .People
-    .WithNoLock(true)
+    .WithHint(SqlServerHints.UPDLOCK)
     .Take(1)
-    .ToList(); 
-
-var list = db
-    .People
-    .WithNoLock(false)
-    .Take(1)
-    .ToList(); 
+    .ToList();
 ```
+ ```sql
+SELECT [b].[Id], [b].[Date], [b].[Name]
+FROM [Blogs] AS [b] WITH (UPDLOCK) 
+```
+
 
 ## Example of use ToSql
  * New extension to design the SQL output
