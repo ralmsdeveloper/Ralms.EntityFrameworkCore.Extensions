@@ -14,9 +14,12 @@
  *
  */
 
+using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.EntityFrameworkCore.Query;
 
 namespace Microsoft.EntityFrameworkCore
@@ -34,6 +37,15 @@ namespace Microsoft.EntityFrameworkCore
             [NotParameterized] string hint)
             where TEntity : class
         {
+            var infrastructure = source as IInfrastructure<IServiceProvider>;
+            var serviceProvider = infrastructure.Instance;
+            var currentDbContext = serviceProvider.GetService(typeof(ICurrentDbContext))
+                                       as ICurrentDbContext;
+            var providerName = currentDbContext.Context.Database.ProviderName;
+
+            if (providerName != "Microsoft.EntityFrameworkCore.SqlServer")
+                return source;
+
             return source.Provider.CreateQuery<TEntity>(
                 Expression.Call(
                     null,
@@ -44,3 +56,4 @@ namespace Microsoft.EntityFrameworkCore
         #endregion 
     }
 }
+
